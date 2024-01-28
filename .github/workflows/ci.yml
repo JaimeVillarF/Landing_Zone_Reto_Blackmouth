@@ -47,12 +47,14 @@ jobs:
     name: deploy
     runs-on: Ubuntu-latest
     needs: build
+    environment:
+      name: Deploy TF
     steps:
-      - uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          approvers: JaimeVillarF
-          exclude-workflow-initiator-as-approver: true
+      # - uses: trstringer/manual-approval@v1
+      #   with:
+      #     secret: ${{ github.TOKEN }}
+      #     approvers: JaimeVillarF
+      #     exclude-workflow-initiator-as-approver: true
 
       - name: Terraform apply
         run: |
