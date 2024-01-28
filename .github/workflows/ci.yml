@@ -21,40 +21,32 @@ jobs:
       with:
         terraform_version: 1.7.1
 
-    # - name: Install Docker
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y docker.io
-    #     sudo systemctl start docker
-    #     sudo systemctl enable docker
+    - name: Terraform init
+      run: |
+        if [[ $GITHUB_REF == *"dev"* ]]; then
+          cd infra/dev
+          echo "Using dev environment"
+          terraform init
+        elif [[ $GITHUB_REF == *"prod"* ]]; then
+          cd infra/prod
+          echo "Using prod environment"
+          terraform init
+        else
+          echo "Unknown environment"
+          exit 1
+        fi
 
-    # - name: Terraform init
-    #   run: |
-    #     if [[ $GITHUB_REF == *"dev"* ]]; then
-    #       cd infra/dev
-    #       echo "Using dev environment"
-    #       terraform init
-    #     elif [[ $GITHUB_REF == *"prod"* ]]; then
-    #       cd infra/prod
-    #       echo "Using prod environment"
-    #       terraform init
-    #     else
-    #       echo "Unknown environment"
-    #       exit 1
-    #     fi
+    - name: Terraform validate
+      run: terraform validate
 
-    # - name: Terraform validate
-    #   run: terraform validate
+    - name: Terraform plan
+      run: terraform plan
 
-    # - name: Terraform plan
-    #   run: terraform plan
-
-    # - name: Terraform apply
-    #   run: terraform apply -auto-approve
+    - name: Terraform apply
+      run: terraform apply -auto-approve
 
     - name: Build and test Lambda
       run: |
-        cd infra/dev ### Delete this line after the test
         cd ../..
         docker build -t lambda-image .
         docker run -t lambda-image
