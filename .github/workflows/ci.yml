@@ -50,6 +50,9 @@ jobs:
     environment:
       name: Deploy TF
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Terraform apply
         run: |
           if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
