@@ -1,4 +1,4 @@
-### Versión en original en ingles ####
+### Versión en original en ingles ###
 
 The ci.yml file is a configuration file for GitHub Actions, which is a continuous integration and continuous delivery (CI/CD) platform provided by GitHub. 
 This specific file defines a workflow named "CI" that runs on the ubuntu-latest operating system. The workflow is triggered on pushes and pull requests to any branch ('**').
