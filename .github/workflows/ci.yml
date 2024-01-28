@@ -27,7 +27,7 @@ jobs:
           cd infra/dev
           echo "Using dev environment"
           # terraform init
-        elif [[ $GITHUB_REF == "main" ]]; then
+        elif [[ $GITHUB_REF == *"main"* ]]; then
           cd infra/pro
           echo "Using pro environment"
           # terraform init
