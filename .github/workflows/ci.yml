@@ -19,33 +19,26 @@ jobs:
       with:
         terraform_version: 1.7.1
 
-    - name: Terraform init
+    - name: Terraform plan
       run: |
         if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
           cd infra/dev
-          echo "Using dev environment"
+          echo "Using DEV environment"
           echo "Showing current directory" ### TODO:Borrar linea
           pwd ### TODO:Borrar linea
           # terraform init
+          # terraform validate
+          # terraform plan
         elif [[ $GITHUB_BASE_REF == *"main"* ]]; then
           cd infra/pro
-          echo "Using pro environment"
-          echo "Showing current directory" ### TODO:Borrar linea
-          pwd ### TODO:Borrar linea
+          echo "Using PRO environment"
           # terraform init
+          # terraform validate
+          # terraform plan
         else
           echo "Unknown environment"
           exit 1
         fi
-
-    - name: Terraform validate
-      run: |
-        echo "Showing current directory" ### TODO:Borrar linea
-        pwd ### TODO:Borrar linea
-        # terraform validate
-
-    # - name: Terraform plan
-    #   run: terraform plan
 
     - name: Manual Approval
       uses: trstringer/manual-approval@v1
@@ -53,8 +46,20 @@ jobs:
         approvers: JaimeVillarF
         secret: ${{ github.TOKEN }}
 
-    # - name: Terraform apply
-    #   run: terraform apply -auto-approve
+    - name: Terraform apply
+      run: |
+        if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
+          cd infra/dev
+          echo "Deploying DEV environment"
+          # terraform apply -auto-approve
+        elif [[ $GITHUB_BASE_REF == *"main"* ]]; then
+          cd infra/pro
+          echo "Deploying PRO environment"
+          # terraform apply -auto-approve
+        else
+          echo "Unknown environment"
+          exit 1
+        fi
 
     - name: Build and test Lambda
       run: |
