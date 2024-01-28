@@ -8,8 +8,8 @@ on:
 
 jobs:
   build:
+    name: build
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -24,8 +24,6 @@ jobs:
         if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
           cd infra/dev
           echo "Using DEV environment"
-          echo "Showing current directory" ### TODO:Borrar linea
-          pwd ### TODO:Borrar linea
           # terraform init
           # terraform validate
           # terraform plan
@@ -46,22 +44,32 @@ jobs:
         approvers: JaimeVillarF
         secret: ${{ github.TOKEN }}
 
-    - name: Terraform apply
-      run: |
-        if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
-          cd infra/dev
-          echo "Deploying DEV environment"
-          # terraform apply -auto-approve
-        elif [[ $GITHUB_BASE_REF == *"main"* ]]; then
-          cd infra/pro
-          echo "Deploying PRO environment"
-          # terraform apply -auto-approve
-        else
-          echo "Unknown environment"
-          exit 1
-        fi
-
     - name: Build and test Lambda
       run: |
         docker build -t lambda-image .
         docker run -t lambda-image
+
+  deploy:
+    name: deploy
+    runs-on: Ubuntu-latest
+    needs: build
+    steps:
+      - uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: JaimeVillarF
+
+      - name: Terraform apply
+        run: |
+          if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
+            cd infra/dev
+            echo "Deploying DEV environment"
+            # terraform apply -auto-approve
+          elif [[ $GITHUB_BASE_REF == *"main"* ]]; then
+            cd infra/pro
+            echo "Deploying PRO environment"
+            # terraform apply -auto-approve
+          else
+            echo "Unknown environment"
+            exit 1
+          fi
