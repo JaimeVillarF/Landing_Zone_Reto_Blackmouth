@@ -1,4 +1,4 @@
-name: CI
+name: CICD Docker + TF
 
 on:
   pull_request:
@@ -14,10 +14,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # - name: Docker - Build and test Lambda
-    #   run: |
-    #     docker build -t lambda-image .
-    #     docker run -t lambda-image
+    - name: Docker - Build and test Lambda
+      run: |
+        docker build -t lambda-image .
+        docker run -t lambda-image
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
