@@ -1,9 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - '**'
   pull_request:
     branches:
       - '**'
@@ -21,29 +18,29 @@ jobs:
       with:
         terraform_version: 1.7.1
 
-    # - name: Terraform init
-    #   run: |
-    #     if [[ $GITHUB_REF == *"dev"* ]]; then
-    #       cd infra/dev
-    #       echo "Using dev environment"
-    #       terraform init
-    #     elif [[ $GITHUB_REF == *"main"* ]]; then
-    #       cd infra/pro
-    #       echo "Using pro environment"
-    #       terraform init
-    #     else
-    #       echo "Unknown environment"
-    #       exit 1
-    #     fi
+    - name: Terraform init
+      run: |
+        if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
+          cd infra/dev
+          echo "Using dev environment"
+          terraform init
+        elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+          cd infra/pro
+          echo "Using pro environment"
+          terraform init
+        else
+          echo "Unknown environment"
+          exit 1
+        fi
 
-    # - name: Terraform validate
-    #   run: terraform validate
+    - name: Terraform validate
+      run: terraform validate
 
-    # - name: Terraform plan
-    #   run: terraform plan
+    - name: Terraform plan
+      run: terraform plan
 
-    # - name: Terraform apply
-    #   run: terraform apply -auto-approve
+    - name: Terraform apply
+      run: terraform apply -auto-approve
 
     - name: Build and test Lambda
       run: |
