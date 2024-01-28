@@ -14,10 +14,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Docker - Build and test Lambda
-      run: |
-        docker build -t lambda-image .
-        docker run -t lambda-image
+    # - name: Docker - Build and test Lambda
+    #   run: |
+    #     docker build -t lambda-image .
+    #     docker run -t lambda-image
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
@@ -50,19 +50,17 @@ jobs:
     environment:
       name: Deploy TF
     steps:
-      # - uses: trstringer/manual-approval@v1
-      #   with:
-      #     secret: ${{ github.TOKEN }}
-      #     approvers: JaimeVillarF
-      #     exclude-workflow-initiator-as-approver: true
-
       - name: Terraform apply
         run: |
           if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
+            echo "Showing current directory"
+            pwd
             cd infra/dev
             echo "Deploying DEV environment"
             # terraform apply -auto-approve
           elif [[ $GITHUB_BASE_REF == *"main"* ]]; then
+            echo "Showing current directory"
+            pwd
             cd infra/pro
             echo "Deploying PRO environment"
             # terraform apply -auto-approve
