@@ -27,14 +27,14 @@ jobs:
     - name: Terraform plan
       run: |
         if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
-          cd infra/dev
           echo "Using DEV environment"
+          cd infra/dev
           # terraform init
           # terraform validate
           # terraform plan
         elif [[ $GITHUB_BASE_REF == *"main"* ]]; then
-          cd infra/pro
           echo "Using PRO environment"
+          cd infra/pro
           # terraform init
           # terraform validate
           # terraform plan
@@ -57,19 +57,11 @@ jobs:
         run: |
           if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
             echo "Deploying DEV environment"
-            echo "Showing current directory"
-            pwd
-            echo "Showing directory content"
-            ls
             cd infra/dev
-            echo "Deploying DEV environment"
             # terraform apply -auto-approve
           elif [[ $GITHUB_BASE_REF == *"main"* ]]; then
             echo "Deploying PRO environment"
-            echo "Showing current directory"
-            pwd
             cd infra/pro
-            echo "Deploying PRO environment"
             # terraform apply -auto-approve
           else
             echo "Unknown environment"
