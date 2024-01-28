@@ -53,12 +53,16 @@ jobs:
       - name: Terraform apply
         run: |
           if [[ $GITHUB_BASE_REF == *"develop"* ]]; then
+            echo "Deploying DEV environment"
             echo "Showing current directory"
             pwd
+            echo "Showing directory content"
+            ls
             cd infra/dev
             echo "Deploying DEV environment"
             # terraform apply -auto-approve
           elif [[ $GITHUB_BASE_REF == *"main"* ]]; then
+            echo "Deploying PRO environment"
             echo "Showing current directory"
             pwd
             cd infra/pro
