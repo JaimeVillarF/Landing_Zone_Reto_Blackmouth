@@ -19,28 +19,42 @@ jobs:
         terraform_version: 1.7.1
 
     - name: Terraform init
+      if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
       run: |
-        if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
+        if [[ $GITHUB_REF == *"develop"* ]]; then
           cd infra/dev
           echo "Using dev environment"
-          terraform init
-        elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+          echo "Showing current directory" ### TODO:Borrar linea
+          pwd ### TODO:Borrar linea
+          # terraform init
+        elif [[ $GITHUB_REF == *"main"* ]]; then
           cd infra/pro
           echo "Using pro environment"
-          terraform init
+          echo "Showing current directory" ### TODO:Borrar linea
+          pwd ### TODO:Borrar linea
+          # terraform init
         else
           echo "Unknown environment"
           exit 1
         fi
 
     - name: Terraform validate
-      run: terraform validate
+      run: |
+        echo "Showing current directory" ### TODO:Borrar linea
+        pwd ### TODO:Borrar linea
+        # terraform validate
 
-    - name: Terraform plan
-      run: terraform plan
+    # - name: Terraform plan
+    #   run: terraform plan
 
-    - name: Terraform apply
-      run: terraform apply -auto-approve
+    - name: Manual Approval
+      uses: trstringer/manual-approval@v1
+      with:
+        approvers: JaimeVillarF
+        secret: ${{ github.TOKEN }}
+
+    # - name: Terraform apply
+    #   run: terraform apply -auto-approve
 
     - name: Build and test Lambda
       run: |
