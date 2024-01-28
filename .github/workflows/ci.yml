@@ -47,8 +47,9 @@ jobs:
 
     - name: Build and test Lambda
       run: |
-        echo "Using dev environment"
+        echo "Mostrando directorio actual"
         pwd
-        cd ../..
+        echo "Mostrando contenido del directorio"
+        ls
         docker build -t lambda-image .
         docker run -t lambda-image
