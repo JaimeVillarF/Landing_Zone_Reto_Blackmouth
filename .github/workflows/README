@@ -1,0 +1,52 @@
+### Versión en original en ingles ###
+
+The ci.yml file is a configuration file for GitHub Actions, which is a continuous integration and continuous delivery (CI/CD) platform provided by GitHub. 
+This specific file defines a workflow named "CI" that runs on the ubuntu-latest operating system. The workflow is triggered on pushes and pull requests to any branch ('**').
+
+The workflow consists of a single job named "build", which contains several steps:
+
+Checkout repository: This step checks out the repository's code using the actions/checkout action. This allows the workflow to access the repository's code.
+Set up Terraform: This step sets up Terraform version 1.0.0 using the hashicorp/setup-terraform action.
+Terraform init: This step initializes the Terraform working directory using the terraform init command.
+Terraform validate: This step validates the Terraform configuration files using the terraform validate command.
+Terraform plan: This step generates an execution plan for Terraform using the terraform plan command.
+Terraform apply: This step applies the Terraform configuration to the infrastructure using the terraform apply command. The TF_VAR_auto_approve environment variable is set to true to automatically approve the apply step.
+Build and test Lambda: This step navigates to the lambdas/Players directory and performs the following tasks:
+Builds a Docker image using the docker build command.
+Runs the Docker image and executes the npm run test command inside the container.
+This workflow is designed to automate the deployment of infrastructure using Terraform and to build and test a Lambda function as part of the CI/CD process. The workflow is triggered on any branch, allowing for easy testing and deployment of changes to the infrastructure. The use of GitHub Actions makes it easy to integrate this workflow into the existing GitHub repository.
+
+Regarding the DevOps challenge, the workflow defined in the ci.yml file can be used to deploy the infrastructure required for the new service. The infrastructure will be implemented using Terraform and HCL, and the state will be stored in an S3 bucket. The workflow will be triggered on pushes and manual deployments, allowing for easy deployment and testing of changes.
+
+The backend team can use a Dockerfile to build and test the Lambda function, and the npm run test command can be used to execute the tests. The test results can be added to the pull request, allowing for easy review and approval of changes.
+
+Overall, the ci.yml file defines a comprehensive CI/CD workflow that can be used to automate the deployment and testing of the new infrastructure and Lambda function. The use of GitHub Actions makes it easy to integrate this workflow into the existing GitHub repository, allowing for easy collaboration and review of changes.
+
+### Versión traducida a castellano ###
+El archivo ci.yml es un archivo de configuración para GitHub Actions, que es una plataforma de integración continua y entrega continua (CI/CD) proporcionada por GitHub. Este archivo en particular define un flujo de trabajo llamado "CI" que se ejecuta en el sistema operativo ubuntu-latest. El flujo de trabajo se activa en empujes (pushes) y solicitudes de extracción (pull requests) a cualquier rama ('**').
+
+El flujo de trabajo consta de un único trabajo llamado "build", que contiene varios pasos:
+
+Checkout del repositorio: Este paso verifica el código del repositorio utilizando la acción actions/checkout. Esto permite que el flujo de trabajo acceda al código del repositorio.
+
+Configuración de Terraform: Este paso configura Terraform en la versión 1.0.0 utilizando la acción hashicorp/setup-terraform.
+
+Terraform init: Este paso inicializa el directorio de trabajo de Terraform utilizando el comando terraform init.
+
+Terraform validate: Este paso valida los archivos de configuración de Terraform utilizando el comando terraform validate.
+
+Terraform plan: Este paso genera un plan de ejecución para Terraform utilizando el comando terraform plan.
+
+Terraform apply: Este paso aplica la configuración de Terraform a la infraestructura utilizando el comando terraform apply. La variable de entorno TF_VAR_auto_approve se establece en true para aprobar automáticamente el paso de aplicación.
+
+Construir y probar Lambda: Este paso navega al directorio lambdas/Players y realiza las siguientes tareas:
+
+Construye una imagen de Docker utilizando el comando docker build.
+Ejecuta la imagen de Docker y ejecuta el comando npm run test dentro del contenedor.
+Este flujo de trabajo está diseñado para automatizar la implementación de la infraestructura utilizando Terraform y para construir y probar una función Lambda como parte del proceso CI/CD. El flujo de trabajo se activa en cualquier rama, lo que permite probar y implementar fácilmente cambios en la infraestructura. El uso de GitHub Actions facilita la integración de este flujo de trabajo en el repositorio de GitHub existente.
+
+En cuanto al desafío de DevOps, el flujo de trabajo definido en el archivo ci.yml puede usarse para implementar la infraestructura requerida para el nuevo servicio. La infraestructura se implementará utilizando Terraform y HCL, y el estado se almacenará en un cubo S3. El flujo de trabajo se activará en empujes y despliegues manuales, lo que permitirá una implementación y prueba sencillas de cambios.
+
+El equipo de backend puede utilizar un Dockerfile para construir y probar la función Lambda, y el comando npm run test se puede usar para ejecutar las pruebas. Los resultados de las pruebas se pueden agregar a la solicitud de extracción, lo que facilita la revisión y aprobación de cambios.
+
+En resumen, el archivo ci.yml define un flujo de trabajo integral de CI/CD que se puede utilizar para automatizar la implementación y prueba de la nueva infraestructura y función Lambda. El uso de GitHub Actions facilita la integración de este flujo de trabajo en el repositorio de GitHub existente, lo que permite una colaboración y revisión sencillas de los cambios.
