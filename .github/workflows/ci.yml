@@ -21,13 +21,12 @@ jobs:
       with:
         terraform_version: 1.7.1
 
-    - name: Install Docker
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker.io
-        sudo systemctl start docker
-        sudo systemctl enable docker
-        cd infra/dev ### Delete this line after the test
+    # - name: Install Docker
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y docker.io
+    #     sudo systemctl start docker
+    #     sudo systemctl enable docker
 
     # - name: Terraform init
     #   run: |
@@ -55,6 +54,7 @@ jobs:
 
     - name: Build and test Lambda
       run: |
+        cd infra/dev ### Delete this line after the test
         cd ../..
         docker build -t lambda-image .
         docker run -t lambda-image
